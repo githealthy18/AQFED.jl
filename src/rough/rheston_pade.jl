@@ -12,7 +12,7 @@ struct RoughHestonParams{T}
 end
 
 
-struct PadeCharFunc{MT,CR,ORDER} <: CharFuncPricing.CharFuncPricing{MT,CR} #model type, return type (e.g. Complex or acb)
+struct PadeCharFunc{MT,CR,ORDER} <: CharFuncPricing.CharFunc{MT,CR} #model type, return type (e.g. Complex or acb)
     model::MT
     q::Quadrature
 end
