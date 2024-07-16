@@ -3,10 +3,10 @@ const SqrtEpsilon = sqrt(eps())
 # totalVariance is vol^2*τ
 export blackScholesFormula, blackScholesVega
 
-function blackScholesFormula(isCall::Bool, strike::Number, spot::Number, totalVariance::Number, driftDf::Number, discountDf::Number)
-    sign = 1
+function blackScholesFormula(isCall::Bool, strike::Float64, spot::Float64, totalVariance::Float64, driftDf::Float64, discountDf::Float64)
+    sign = 1.0
     if !isCall
-        sign = -1
+        sign = -1.0
     end
     forward = spot / driftDf
     if totalVariance < eps()
@@ -14,7 +14,7 @@ function blackScholesFormula(isCall::Bool, strike::Number, spot::Number, totalVa
         return price
     elseif spot < eps()
         if isCall
-            return 0
+            return 0.0
         else
             return discountDf * strike
         end
@@ -22,7 +22,7 @@ function blackScholesFormula(isCall::Bool, strike::Number, spot::Number, totalVa
         if isCall
             return discountDf * forward
         else
-            return 0
+            return 0.0
         end
     else
         sqrtVar = sqrt(totalVariance)
