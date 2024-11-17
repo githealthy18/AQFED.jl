@@ -3,6 +3,7 @@ using SparseArrays, LinearAlgebra
 using GoldfarbIdnaniSolver
 import AQFED.TermStructure:varianceByLogmoneyness
 import AQFED.Black:impliedVolatility
+import PPInterpolation: evaluatePiece, evaluateSecondDerivativePiece, evaluateSecondDerivative, evaluate
 
 "C2 Cubic Spline representation in terms of second derivative values"
 struct C2Spline{VX,VY}
