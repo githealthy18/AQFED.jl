@@ -89,15 +89,15 @@ AdamsCharFunc(model::RoughHestonParams{Float64}, n::Int=200) = AdamsCharFunc{Com
 @inline CharFuncPricing.model(cf::AdamsCharFunc) = cf.model
 
 RoughHestonCVCharFunc(delegate::Union{AdamsCharFunc{RoughHestonParams{T},CR},PadeCharFunc{RoughHestonParams{T},CR}}) where {T,CR} =
-    CharFuncPricing.CVCharFunc{RoughHestonParams{T},BlackParams{T},CR}(
+    CharFuncPricing.CVCharFunc{RoughHestonParams{T},CharFuncPricing.BlackParams{T},CR}(
         delegate,
-        CharFuncPricing.DefaultCharFunc{BlackParams{T},CR}(
+        CharFuncPricing.DefaultCharFunc{CharFuncPricing.BlackParams{T},CR}(
             CharFuncPricing.BlackParams{T}(sqrt(CharFuncPricing.model(delegate).varianceCurve(zero(T))))
         ),
     )
 
 @inline function CharFuncPricing.getControlVariance(
-        cf::CVCharFunc{RoughHestonParams{T},BlackParams{T}},
+        cf::CVCharFunc{RoughHestonParams{T},CharFuncPricing.BlackParams{T}},
         τ::T,
     )::T where {T}
       CharFuncPricing.model(cf).varianceCurve(zero(T))
