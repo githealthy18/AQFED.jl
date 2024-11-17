@@ -1,6 +1,6 @@
 export UniformGrid, LogGrid, ShiftedGrid, CubicGrid, SinhGrid, makeArray, SmoothlyDeformedGrid
 using PolynomialRoots
-using PPInterpolation
+import PPInterpolation
 
 abstract type Grid end
 
