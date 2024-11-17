@@ -1,39 +1,10 @@
 using AQFED.Math, AQFED.Black
 using Images
 
-abstract type FractalSolver end
-struct Householder <: FractalSolver end
-struct FractalSRSolver <: FractalSolver
-    srSolver::SRSolver
-end
-struct Newton <: FractalSolver end
-
-abstract type FractalColoring end
-struct PaletteColoring <: FractalColoring
-    palette::Vector{RGB}
-    power::Float64
-    isInverted::Bool
-end
 function PaletteColoring()
     return PaletteColoring([RGB(5.0 / 255, 5.0 / 255, 30.0 / 255), RGB(80.0 / 255, 20.0 / 255, 20.0 / 255), RGB((255 - 20.0) / 255, (245 - 20.0) / 255, (215 - 20.0) / 255)], 1.0, false)
 end
 
-struct SpectralColoring <: FractalColoring
-    power::Float64
-    isInverted::Bool
-end
-function SpectralColoring()
-    return SpectralColoring(0.5, true)
-end
-
-struct SinColoring <: FractalColoring
-    rMultiplier::Float64
-    gMultiplier::Float64
-    bMultiplier::Float64
-    factor::Float64
-    power::Float64
-    isInverted::Bool
-end
 SinColoring() = SinColoring(0.015, 0.013, 0.01, 300.0, 0.5, false)
 
 
