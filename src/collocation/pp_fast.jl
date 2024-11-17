@@ -26,33 +26,33 @@ function Base.convert(::Type{FastPP{N,T,TX}}, spl::BSplines.Spline) where {N,T,T
         return PP(3, a, b, c, x)
 end
 
-function changeSupport(pp::FastPP{3,T,TX}, xa::AbstractArray{TX})::FastPP{3,T,TX} where {N,T,TX}
-#xa has same endpoints as x.
-    ya = @. pp(xa)
-return makeCubicPP(xa,ya,FIRST_DERIVATIVE, evaluateDerivative(pp,xa[1]),FIRST_DERIVATIVE,evaluateDerivative(pp,xa[end]),C2())
+function changeSupport(pp::FastPP{3,T,TX}, xa::AbstractArray{TX})::FastPP{3,T,TX} where {T,TX}
+    #xa has same endpoints as x.
+        ya = @. pp(xa)
+    return makeCubicPP(xa,ya,FIRST_DERIVATIVE, evaluateDerivative(pp,xa[1]),FIRST_DERIVATIVE,evaluateDerivative(pp,xa[end]),C2())
 end
 
 function insertKnots(pp::FastPP{3,T,TX}, za::AbstractArray{TX})::FastPP{3,T,TX} where {N,T,TX}
-newPP = PP(N,T,TX,length(pp)+length(za))
-newPP.a[ppIndex]=pp.a[ppIndex]
-newPP.b[ppIndex]=pp.b[ppIndex]
-newPP.c[ppIndex,:] = pp.c[ppIndex,:]
+    newPP = PP(N,T,TX,length(pp)+length(za))
+    newPP.a[ppIndex]=pp.a[ppIndex]
+    newPP.b[ppIndex]=pp.b[ppIndex]
+    newPP.c[ppIndex,:] = pp.c[ppIndex,:]
 
-for (i,z) in enumerate(za)
-    while (ppIndex < length(self.x) && (self.x[ppIndex] < z)) #Si[ppIndex]<=z<Si[ppIndex+1]  
-        ppIndex += 1
+    for (i,z) in enumerate(za)
+        while (ppIndex < length(self.x) && (self.x[ppIndex] < z)) #Si[ppIndex]<=z<Si[ppIndex+1]  
+            ppIndex += 1
+            newIndex == ppIndex+i-1
+            newPP.a[newIndex]=pp.a[ppIndex]
+            newPP.b[newIndex]=pp.b[ppIndex]
+            newPP.c[newIndex,:] = pp.c[ppIndex,:]
+        end
+        ppIndex -= 1
+        ppIndex = min(max(ppIndex, 1), length(self.x) - 1)
         newIndex == ppIndex+i-1
-        newPP.a[newIndex]=pp.a[ppIndex]
-        newPP.b[newIndex]=pp.b[ppIndex]
-        newPP.c[newIndex,:] = pp.c[ppIndex,:]
+        newPP.a[newIndex] = evaluatePiece(pp, ppIndex, z)
+        newPP.b[newIndex] = evaluateDerivativePiece(pp, ppIndex, z)
+        newPP.c[newIndex,1] = evaluateSecondDerivativePiece(pp, ppIndex, z)/2
+        newPP.c[newIndex,2] = evaluateThirdDerivativePiece(pp, ppIndex, z)/6
     end
-    ppIndex -= 1
-    ppIndex = min(max(ppIndex, 1), length(self.x) - 1)
-    newIndex == ppIndex+i-1
-    newPP.a[newIndex] = evaluatePiece(pp, ppIndex, z)
-    newPP.b[newIndex] = evaluateDerivativePiece(pp, ppIndex, z)
-    newPP.c[newIndex,1] = evaluateSecondDerivativePiece(pp, ppIndex, z)/2
-    newPP.c[newIndex,2] = evaluateThirdDerivativePiece(pp, ppIndex, z)/6
-end
-return newPP
+    return newPP
 end

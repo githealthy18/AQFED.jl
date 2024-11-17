@@ -1,4 +1,5 @@
-using CharFuncPricing
+import CharFuncPricing
+import CharFuncPricing: evaluateCharFunc, CharFunc, getControlVariance, evaluateLogCharFunc, CVCharFunc, model
 using AQFED.Math
 import SpecialFunctions: gamma
 
@@ -111,7 +112,7 @@ function CharFuncPricing.evaluateCharFunc(
     return phi - phiB
 end
 
-struct ChebyshevCharFunc{CF,MT,CR} <:    CharFuncPricing.CharFunc{MT,CR} 
+struct ChebyshevCharFunc{CF,MT,CR} <: CharFuncPricing.CharFunc{MT,CR} 
     delegate::CF      
     upperBound::Float64
     coeff::Vector{Complex}

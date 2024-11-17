@@ -12,7 +12,7 @@ function priceAsianFixedStrike(
     forward::AbstractArray{<:Number}, #forward to each Asian observation t_i
     totalVariance::AbstractArray{<:Number}, #vol^2 * t_i
     weight::AbstractArray{<:Number},
-)::Number where {TV <: Number}
+)::Number
 
     nAsset = length(totalVariance)
     spots = fill(spot, nAsset)
