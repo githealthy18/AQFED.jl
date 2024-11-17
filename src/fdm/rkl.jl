@@ -232,7 +232,7 @@ function priceRKG2(definition::StructureDefinition,
     tip = t[1]
     payoff = makeFDMStructure(definition, Si)
     advance(definition, payoff, tip)
-    evaluate(definition, payoff, Si)
+    PPInterpolation.evaluate(definition, payoff, Si)
     vLowerBound = zeros(T, length(Si))
     isLBActive = isLowerBoundActive(definition, payoff)
     if isLBActive
@@ -272,7 +272,7 @@ function priceRKG2(definition::StructureDefinition,
                 else #liquidator
                     v1 = @view v1Matrix[:, iv]
                     @. v1 = max(Si - dividends[currentDivIndex].dividend.amount, zero(T))
-                    evaluateSorted!(pp, v, v1)
+                    PPInterpolation.evaluateSorted!(pp, v, v1)
                     # println("jumped ",currentDivIndex, " of ",dividends[currentDivIndex].dividend.amount," tip ",tip)
                 end
             end
@@ -383,7 +383,7 @@ function priceRKG2(definition::StructureDefinition,
             end
             vMatrix .= v1Matrix
             for (iv, v) in Iterators.reverse(enumerate(eachcol(vMatrix)))
-                evaluate(definition, payoff, Si, iv)
+                PPInterpolation.evaluate(definition, payoff, Si, iv)
                 if isLBActive
                     lowerBound!(payoff, vLowerBound)
                 end
@@ -411,7 +411,7 @@ function priceRKG2(definition::StructureDefinition,
                     else #liquidator
                         v1 = @view v1Matrix[:, iv]
                         @. v1 = max(Si - dividends[currentDivIndex].dividend.amount, zero(T))
-                        evaluateSorted!(pp, v, v1)
+                        PPInterpolation.evaluateSorted!(pp, v, v1)
                         # println("jumped ",currentDivIndex, " of ",dividends[currentDivIndex].dividend.amount," tip ",tip)
                     end
                 end
@@ -476,7 +476,7 @@ function priceRKC2(definition::StructureDefinition,
     tip = t[1]
     payoff = makeFDMStructure(definition, Si)
     advance(definition, payoff, tip)
-    evaluate(definition, payoff, Si)
+    PPInterpolation.evaluate(definition, payoff, Si)
     vLowerBound = zeros(T, length(Si))
     isLBActive = isLowerBoundActive(definition, payoff)
     if isLBActive
@@ -516,7 +516,7 @@ function priceRKC2(definition::StructureDefinition,
                 else #liquidator
                     v1 = @view v1Matrix[:, iv]
                     @. v1 = max(Si - dividends[currentDivIndex].dividend.amount, zero(T))
-                    evaluateSorted!(pp, v, v1)
+                    PPInterpolation.evaluateSorted!(pp, v, v1)
                     # println("jumped ",currentDivIndex, " of ",dividends[currentDivIndex].dividend.amount," tip ",tip)
                 end
             end
@@ -626,7 +626,7 @@ function priceRKC2(definition::StructureDefinition,
             end
             vMatrix .= v1Matrix
             for (iv, v) in Iterators.reverse(enumerate(eachcol(vMatrix)))
-                evaluate(definition, payoff, Si, iv)
+                PPInterpolation.evaluate(definition, payoff, Si, iv)
                 if isLBActive
                     lowerBound!(payoff, vLowerBound)
                 end
@@ -654,7 +654,7 @@ function priceRKC2(definition::StructureDefinition,
                     else #liquidator
                         v1 = @view v1Matrix[:, iv]
                         @. v1 = max(Si - dividends[currentDivIndex].dividend.amount, zero(T))
-                        evaluateSorted!(pp, v, v1)
+                        PPInterpolation.evaluateSorted!(pp, v, v1)
                         # println("jumped ",currentDivIndex, " of ",dividends[currentDivIndex].dividend.amount," tip ",tip)
                     end
                 end
@@ -719,7 +719,7 @@ function priceRKL2(definition::StructureDefinition,
     tip = t[1]
     payoff = makeFDMStructure(definition, Si)
     advance(definition, payoff, tip)
-    evaluate(definition, payoff, Si)
+    PPInterpolation.evaluate(definition, payoff, Si)
     vLowerBound = zeros(T, length(Si))
     isLBActive = isLowerBoundActive(definition, payoff)
     if isLBActive
@@ -758,7 +758,7 @@ function priceRKL2(definition::StructureDefinition,
                 else #liquidator
                     v1 = @view v1Matrix[:, iv]
                     @. v1 = max(Si - dividends[currentDivIndex].dividend.amount, zero(T))
-                    evaluateSorted!(pp, v, v1)
+                    PPInterpolation.evaluateSorted!(pp, v, v1)
                     # println("jumped ",currentDivIndex, " of ",dividends[currentDivIndex].dividend.amount," tip ",tip)
                 end
             end
@@ -843,7 +843,7 @@ function priceRKL2(definition::StructureDefinition,
             end
             vMatrix .= v1Matrix
             for (iv, v) in Iterators.reverse(enumerate(eachcol(vMatrix)))
-                evaluate(definition, payoff, Si, iv)
+                PPInterpolation.evaluate(definition, payoff, Si, iv)
                 if isLBActive
                     lowerBound!(payoff, vLowerBound)
                 end
@@ -872,7 +872,7 @@ function priceRKL2(definition::StructureDefinition,
                     else #liquidator
                         v1 = @view v1Matrix[:, iv]
                         @. v1 = max(Si - dividends[currentDivIndex].dividend.amount, zero(T))
-                        evaluateSorted!(pp, v, v1)
+                        PPInterpolation.evaluateSorted!(pp, v, v1)
                         # println("jumped ",currentDivIndex, " of ",dividends[currentDivIndex].dividend.amount," tip ",tip)
                     end
                 end
@@ -979,7 +979,7 @@ function priceExplicitEuler(definition::StructureDefinition,
     tip = t[1]
     payoff = makeFDMStructure(definition, Si)
     advance(definition, payoff, tip)
-    evaluate(definition, payoff, Si)
+    PPInterpolation.evaluate(definition, payoff, Si)
     vLowerBound = zeros(T, length(Si))
     isLBActive = isLowerBoundActive(definition, payoff)
     if isLBActive
@@ -1012,7 +1012,7 @@ function priceExplicitEuler(definition::StructureDefinition,
                 else #liquidator
                     v1 = @view v1Matrix[:, iv]
                     @. v1 = max(Si - dividends[currentDivIndex].dividend.amount, zero(T))
-                    evaluateSorted!(pp, v, v1)
+                    PPInterpolation.evaluateSorted!(pp, v, v1)
                     # println("jumped ",currentDivIndex, " of ",dividends[currentDivIndex].dividend.amount," tip ",tip)
                 end
             end
@@ -1075,7 +1075,7 @@ function priceExplicitEuler(definition::StructureDefinition,
                 v[1:end] = Y1
             end
             for (iv, v) in Iterators.reverse(enumerate(eachcol(vMatrix)))
-                evaluate(definition, payoff, Si, iv)
+                PPInterpolation.evaluate(definition, payoff, Si, iv)
                 if isLBActive
                     lowerBound!(payoff, vLowerBound)
                 end
@@ -1102,7 +1102,7 @@ function priceExplicitEuler(definition::StructureDefinition,
                         else #liquidator
                             v1 = @view v1Matrix[:, iv]
                             @. v1 = max(Si - dividends[currentDivIndex].dividend.amount, zero(T))
-                            evaluateSorted!(pp, v, v1)
+                            PPInterpolation.evaluateSorted!(pp, v, v1)
                             # println("jumped ",currentDivIndex, " of ",dividends[currentDivIndex].dividend.amount," tip ",tip)
                         end
                     end

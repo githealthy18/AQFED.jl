@@ -41,7 +41,7 @@ function priceLogTRBDF2(definition::StructureDefinition,
     tip = t[1]
     payoff = makeFDMStructure(definition, Si)
     advance(definition,payoff, tip)
-    evaluate(definition, payoff, Si)
+    PPInterpolation.evaluate(definition, payoff, Si)
     vLowerBound = zeros(T, length(Si))
     isLBActive = isLowerBoundActive(definition, payoff)
     if isLBActive
@@ -93,7 +93,7 @@ function priceLogTRBDF2(definition::StructureDefinition,
                 @. v = pp(ifelse(Si - dividends[currentDivIndex].dividend.amount < zero(T), Si, Si - dividends[currentDivIndex].dividend.amount))
             else #liquidator
                 @. v1 = max(Si - dividends[currentDivIndex].dividend.amount, zero(T))
-                evaluateSorted!(pp, v, v1)
+                PPInterpolation.evaluateSorted!(pp, v, v1)
                 # println("jumped ",currentDivIndex, " of ",dividends[currentDivIndex].dividend.amount," tip ",tip)
             end
         end
@@ -165,7 +165,7 @@ function priceLogTRBDF2(definition::StructureDefinition,
             isLBActive = isLowerBoundActive(definition,payoff)
             setLowerBoundActive(solver, isLBActive)
             solve!(solver, v, v1)
-            evaluate(definition,payoff, Si, iv)  #necessary to update knockin values from vanilla.
+            PPInterpolation.evaluate(definition,payoff, Si, iv)  #necessary to update knockin values from vanilla.
             if isLBActive
                 lowerBound!(payoff, vLowerBound)
             end
@@ -186,7 +186,7 @@ function priceLogTRBDF2(definition::StructureDefinition,
                     @. v = pp(ifelse(Si - dividends[currentDivIndex].dividend.amount < zero(T), Si, Si - dividends[currentDivIndex].dividend.amount))
                 else #liquidator
                     @. v1 = max(Si - dividends[currentDivIndex].dividend.amount, zero(T))
-                    evaluateSorted!(pp, v, v1)
+                    PPInterpolation.evaluateSorted!(pp, v, v1)
                     # println("jumped ",currentDivIndex, " of ",dividends[currentDivIndex].dividend.amount," tip ",tip)
                 end
             end

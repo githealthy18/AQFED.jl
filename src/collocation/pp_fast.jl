@@ -32,7 +32,7 @@ function changeSupport(pp::FastPP{3,T,TX}, xa::AbstractArray{TX})::FastPP{3,T,TX
     return makeCubicPP(xa,ya,FIRST_DERIVATIVE, evaluateDerivative(pp,xa[1]),FIRST_DERIVATIVE,evaluateDerivative(pp,xa[end]),C2())
 end
 
-function insertKnots(pp::FastPP{3,T,TX}, za::AbstractArray{TX})::FastPP{3,T,TX} where {N,T,TX}
+function insertKnots(pp::FastPP{N,T,TX}, za::AbstractArray{TX})::FastPP{N,T,TX} where {N,T,TX}
     newPP = PP(N,T,TX,length(pp)+length(za))
     newPP.a[ppIndex]=pp.a[ppIndex]
     newPP.b[ppIndex]=pp.b[ppIndex]

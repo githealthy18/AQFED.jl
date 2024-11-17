@@ -250,7 +250,7 @@ function advance(timeStepping::TRBDF2, definition, payoff, tip, dt, tIndex, Si::
         decompose(timeStepping.solver, tri)
         solve!(timeStepping.solver, v1, v)
         v[1:end] = v1
-        evaluate(definition, payoff, Si, iv)
+        PPInterpolation.evaluate(definition, payoff, Si, iv)
         if isLBActive
             lowerBound!(payoff, timeStepping.vLowerBound)
         end
@@ -310,7 +310,7 @@ function advance(timeStepping::CrankNicolson, definition, payoff, tip, dt, tInde
         end
     end
     for (iv, v) in Iterators.reverse(enumerate(eachcol(vMatrix)))
-        evaluate(definition, payoff, Si, iv)
+        PPInterpolation.evaluate(definition, payoff, Si, iv)
         isLBActive = isLowerBoundActive(definition, payoff)
         if isLBActive
             lowerBound!(payoff, timeStepping.vLowerBound)
@@ -386,7 +386,7 @@ function advance(timeStepping::BDF1, definition, payoff, tip, dt, tIndex, Si::Ab
         end
     end
     for (iv, v) in Iterators.reverse(enumerate(eachcol(vMatrix)))
-        evaluate(definition, payoff, Si, iv)
+        PPInterpolation.evaluate(definition, payoff, Si, iv)
         isLBActive = isLowerBoundActive(definition, payoff)
         if isLBActive
             lowerBound!(payoff, timeStepping.vLowerBound)
@@ -466,7 +466,7 @@ function priceTRBDF2(definition::StructureDefinition,
     tip = t[1]
     payoff = makeFDMStructure(definition, Si)
     advance(definition, payoff, tip)
-    evaluate(definition, payoff, Si)
+    PPInterpolation.evaluate(definition, payoff, Si)
     vMatrix = currentValue(payoff)
     timeStepping =
         if timeSteppingName == "TRBDF2"
@@ -506,7 +506,7 @@ function priceTRBDF2(definition::StructureDefinition,
                 else #liquidator
                     v1 = @view v1Matrix[:, iv]
                     @. v1 = max(Si - dividends[currentDivIndex].dividend.amount, zero(T))
-                    evaluateSorted!(pp, v, v1)
+                    PPInterpolation.evaluateSorted!(pp, v, v1)
                     # println("jumped ",currentDivIndex, " of ",dividends[currentDivIndex].dividend.amount," tip ",tip)
                 end
             end
@@ -564,7 +564,7 @@ function priceTRBDF2(definition::StructureDefinition,
                     else #liquidator
                         v1 = @view v1Matrix[:, iv]
                         @. v1 = max(Si - dividends[currentDivIndex].dividend.amount, zero(T))
-                        evaluateSorted!(pp, v, v1)
+                        PPInterpolation.evaluateSorted!(pp, v, v1)
                         # println("jumped ",currentDivIndex, " of ",dividends[currentDivIndex].dividend.amount," tip ",tip)
                     end
                 end

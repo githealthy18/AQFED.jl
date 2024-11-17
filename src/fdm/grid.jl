@@ -154,9 +154,9 @@ function makeArray(grid::SmoothlyDeformedGrid{TGrid}, x::AbstractArray{T}, min::
     pp = makeCubicPP(u, v, PPInterpolation.SECOND_DERIVATIVE, zero(T), PPInterpolation.SECOND_DERIVATIVE, zero(T), PPInterpolation.C2Hyman89())
     ppinv = PPInterpolation.makeLinearPP(collect(x), Si)
     S = similar(x)
-    evaluateSorted!(pp, S, x)
+    PPInterpolation.evaluateSorted!(pp, S, x)
     Si = similar(x)
-    evaluateSorted!(ppinv, Si, S)
+    PPInterpolation.evaluateSorted!(ppinv, Si, S)
     pinOnGrid!(Si, starPoints, isMiddle)
     Si
 end
@@ -224,7 +224,7 @@ function makeArray(grid::SmoothlyDeformedGrid{UniformGrid}, x::AbstractArray{T},
     # println("u ",u," v ",v)
     pp = makeCubicPP(u, v, PPInterpolation.SECOND_DERIVATIVE, zero(T), PPInterpolation.SECOND_DERIVATIVE, zero(T), PPInterpolation.C2Hyman89())
     S = similar(x)
-    evaluateSorted!(pp, S, x)
+    PPInterpolation.evaluateSorted!(pp, S, x)
     pinOnGrid!(S, starPoints, isMiddle)
     return S
     #return makeArray(grid.delegate,x,min,max,starPoints,isMiddle) #@. pp(x)
