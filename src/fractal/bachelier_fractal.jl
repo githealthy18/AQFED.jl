@@ -1,13 +1,6 @@
 using AQFED.Math, AQFED.Black
 using Images
 
-function PaletteColoring()
-    return PaletteColoring([RGB(5.0 / 255, 5.0 / 255, 30.0 / 255), RGB(80.0 / 255, 20.0 / 255, 20.0 / 255), RGB((255 - 20.0) / 255, (245 - 20.0) / 255, (215 - 20.0) / 255)], 1.0, false)
-end
-
-SinColoring() = SinColoring(0.015, 0.013, 0.01, 300.0, 0.5, false)
-
-
 function bachelierVolatilityFunctionC3(v; forward=1.0, moneyness=exp(-1.0), targetPrice=0.12693673750664397)
     fmk = forward - forward / moneyness
     h = fmk / v
